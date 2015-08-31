@@ -17,7 +17,7 @@ trait PaginationFactoryTrait
      */
     public function createPagination($currentPage, $total, $perPage = null, $baseUrl = null, $neighbours = null)
     {
-        if ($this->container instanceof \League\Container\ContainerInterface) {
+        if (isset($this->container) && $this->container instanceof \League\Container\ContainerInterface) {
             return $this->getContainer()->get('Laasti\Pagination\Pagination', [$currentPage, $total, $perPage, $baseUrl, $neighbours]);
         }
         
