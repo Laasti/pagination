@@ -58,7 +58,7 @@ class Pagination implements IteratorAggregate, Countable
 
     public function build()
     {
-        if ($this->total === 0 || $this->getTotalPages() === 1) {
+        if ($this->total === 0) {
             return [];
         }
 

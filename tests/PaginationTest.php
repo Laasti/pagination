@@ -134,4 +134,17 @@ class PaginationTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pages === '');
     }
 
+    public function testOnePagePagination()
+    {
+        $pagination = new Pagination(1, 5, 10, 'http:/acme.com/pages/', 2);
+        $this->assertTrue(count($pagination) === 1);
+        $this->assertTrue($pagination->getTotalPages() === 1);
+        $this->assertTrue($pagination->next() === null);
+        $pages = '';
+        foreach ($pagination as $page) {
+            $pages .= $page->number();
+        }
+        $this->assertTrue($pages === '1');
+    }
+
 }
