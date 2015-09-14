@@ -150,7 +150,7 @@ class Pagination implements IteratorAggregate, Countable
 
     public function setBaseUrl($baseUrl)
     {
-        $this->baseUrl = $baseUrl;
+        $this->baseUrl = rtrim($baseUrl, '/').'/';
         return $this;
     }
 

@@ -24,6 +24,12 @@ class PaginationTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pagination->getNeighbours() === 4);
     }
 
+    public function testBaseUrlSlash()
+    {
+        $pagination = new Pagination(2, 50, 10, 'http:/acme.com/pages', 4);
+        $this->assertTrue($pagination->getBaseUrl() === 'http:/acme.com/pages/');
+    }
+
     public function testOutOfBoundsCurrentPage()
     {
         $pagination = new Pagination(2, 50, 10, 'http:/acme.com/pages/', 4);
