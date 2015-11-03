@@ -2,6 +2,7 @@
 
 namespace Laasti\Pagination\Tests;
 
+use Laasti\Pagination\Formatters\PlainHtml;
 use Laasti\Pagination\Pagination;
 
 /**
@@ -145,6 +146,21 @@ class PaginationTest extends \PHPUnit_Framework_TestCase
             $pages .= $page->number();
         }
         $this->assertTrue($pages === '1');
+    }
+
+    public function testNoFormatter()
+    {
+        $this->setExpectedException('RuntimeException');
+        $pagination = new Pagination(1,20);
+        $pagination->getFormatter();
+    }
+
+    public function testFormatter()
+    {
+        $pagination = new Pagination(3, 30, 5);
+        $pagination->setFormatter(new PlainHtml());
+        $result = '<nav class="Breadcrumb"><a href="/1">First</a><a href="/2">Previous</a><a href="/1">1</a><a href="/2">2</a><b>3</b><a href="/4">4</a><a href="/5">5</a><a href="/6">6</a><a href="/4">Next</a><a href="/6">Last</a></nav>';
+        $this->assertEquals($result, (string)$pagination);
     }
 
 }

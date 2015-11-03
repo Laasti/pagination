@@ -20,6 +20,7 @@ class Pagination implements IteratorAggregate, Countable
     protected $perPage;
     protected $baseUrl;
     protected $neighbours;
+    protected $formatter;
 
     function __construct($currentPage, $total, $perPage = 10, $baseUrl = '', $neighbours = 3)
     {
@@ -163,6 +164,28 @@ class Pagination implements IteratorAggregate, Countable
         return $this;
     }
 
+    public function getFormatter()
+    {
+
+        if (is_null($this->formatter)) {
+            throw new \RuntimeException('You need to set a formatter.');
+        }
+
+        return $this->formatter;
+    }
+
+    public function setFormatter(Formatters\FormatterInterface $formatter)
+    {
+        $this->formatter = $formatter;
+
+        return $this;
+    }
+
+    public function render()
+    {
+        return $this->getFormatter()->render($this);
+    }
+
     protected function createPage($number)
     {
         return new Page($number, $number === $this->currentPage, $this->baseUrl);
@@ -176,6 +199,15 @@ class Pagination implements IteratorAggregate, Countable
     protected function getEndPage()
     {
         return min($this->currentPage + $this->neighbours, $this->getTotalPages());
+    }
+
+    public function __toString()
+    {
+        try {
+            return $this->render();
+        } catch (\Exception $e) {
+            return 'No formatter.';
+        }
     }
 
 }
