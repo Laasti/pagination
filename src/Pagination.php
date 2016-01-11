@@ -54,7 +54,7 @@ class Pagination implements IteratorAggregate, Countable
 
     public function next()
     {
-        return $this->currentPage === $this->getTotalPages() ? null : $this->createPage($this->currentPage + 1);
+        return $this->currentPage === $this->getTotalPages() || $this->getTotalPages() === 0 ? null : $this->createPage($this->currentPage + 1);
     }
 
     public function build()
