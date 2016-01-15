@@ -44,7 +44,11 @@ class Page
 
     public function link()
     {
-        return $this->baseUrl.$this->number;
+        if (strpos($this->baseUrl, '{page}') !== false) {
+            return str_replace('{page}', $this->number, $this->baseUrl);
+        } else {
+            return rtrim($this->baseUrl, '/').'/'.$this->number;
+        }
     }
 
     public function __toString()
