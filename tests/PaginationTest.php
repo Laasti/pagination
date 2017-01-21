@@ -119,7 +119,6 @@ class PaginationTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(count($pagination) === 1);
         $pagination->setTotal(0);
         $this->assertTrue(count($pagination) === 0);
-
     }
 
     public function testEmptyPagination()
@@ -151,7 +150,7 @@ class PaginationTest extends \PHPUnit_Framework_TestCase
     public function testNoFormatter()
     {
         $this->setExpectedException('RuntimeException');
-        $pagination = new Pagination(1,20);
+        $pagination = new Pagination(1, 20);
         $pagination->getFormatter();
     }
 
@@ -162,5 +161,4 @@ class PaginationTest extends \PHPUnit_Framework_TestCase
         $result = '<nav class="Breadcrumb"><a href="/1">First</a><a href="/2">Previous</a><a href="/1">1</a><a href="/2">2</a><b>3</b><a href="/4">4</a><a href="/5">5</a><a href="/6">6</a><a href="/4">Next</a><a href="/6">Last</a></nav>';
         $this->assertEquals($result, (string)$pagination);
     }
-
 }

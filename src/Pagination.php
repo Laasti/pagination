@@ -36,6 +36,11 @@ class Pagination implements IteratorAggregate, Countable
         return $this->createPage($this->currentPage);
     }
 
+    protected function createPage($number)
+    {
+        return new Page($number, $number === $this->currentPage, $this->baseUrl);
+    }
+
     public function first()
     {
         return $this->currentPage === 1 ? null : $this->createPage(1);
@@ -47,6 +52,11 @@ class Pagination implements IteratorAggregate, Countable
         return $this->currentPage === $last ? null : $this->createPage($last);
     }
 
+    public function getTotalPages()
+    {
+        return (int)ceil($this->total / $this->perPage);
+    }
+
     public function previous()
     {
         return $this->currentPage === 1 ? null : $this->createPage($this->currentPage - 1);
@@ -55,6 +65,36 @@ class Pagination implements IteratorAggregate, Countable
     public function next()
     {
         return $this->currentPage === $this->getTotalPages() || $this->getTotalPages() === 0 ? null : $this->createPage($this->currentPage + 1);
+    }
+
+    public function count()
+    {
+        return $this->getEndPage() - $this->getStartPage() + 1;
+    }
+
+    protected function getEndPage()
+    {
+        return min($this->currentPage + $this->neighbours, $this->getTotalPages());
+    }
+
+    protected function getStartPage()
+    {
+        return max($this->currentPage - $this->neighbours, 1);
+    }
+
+    public function getOffset()
+    {
+        return $this->currentPage * $this->perPage - $this->perPage;
+    }
+
+    public function getLimit()
+    {
+        return $this->perPage;
+    }
+
+    public function getIterator()
+    {
+        return new ArrayIterator($this->build());
     }
 
     public function build()
@@ -75,54 +115,9 @@ class Pagination implements IteratorAggregate, Countable
         return $pages;
     }
 
-    public function count()
-    {
-        return $this->getEndPage() - $this->getStartPage() + 1;
-    }
-
-    public function getOffset()
-    {
-        return $this->currentPage * $this->perPage - $this->perPage;
-    }
-
-    public function getLimit()
-    {
-        return $this->perPage;
-    }
-
-    public function getTotalPages()
-    {
-        return (int) ceil($this->total / $this->perPage);
-    }
-
-    public function getIterator()
-    {
-        return new ArrayIterator($this->build());
-    }
-
     public function getCurrentPage()
     {
         return $this->currentPage;
-    }
-
-    public function getTotal()
-    {
-        return $this->total;
-    }
-
-    public function getPerPage()
-    {
-        return $this->perPage;
-    }
-
-    public function getBaseUrl()
-    {
-        return $this->baseUrl;
-    }
-
-    public function getNeighbours()
-    {
-        return $this->neighbours;
     }
 
     public function setCurrentPage($currentPage)
@@ -134,10 +129,20 @@ class Pagination implements IteratorAggregate, Countable
         return $this;
     }
 
+    public function getTotal()
+    {
+        return $this->total;
+    }
+
     public function setTotal($total)
     {
         $this->total = $total;
         return $this;
+    }
+
+    public function getPerPage()
+    {
+        return $this->perPage;
     }
 
     public function setPerPage($perPage)
@@ -149,10 +154,20 @@ class Pagination implements IteratorAggregate, Countable
         return $this;
     }
 
+    public function getBaseUrl()
+    {
+        return $this->baseUrl;
+    }
+
     public function setBaseUrl($baseUrl)
     {
         $this->baseUrl = $baseUrl;
         return $this;
+    }
+
+    public function getNeighbours()
+    {
+        return $this->neighbours;
     }
 
     public function setNeighbours($neighbours)
@@ -162,6 +177,20 @@ class Pagination implements IteratorAggregate, Countable
         }
         $this->neighbours = $neighbours;
         return $this;
+    }
+
+    public function __toString()
+    {
+        try {
+            return $this->render();
+        } catch (\Exception $e) {
+            return 'No formatter.';
+        }
+    }
+
+    public function render()
+    {
+        return $this->getFormatter()->render($this);
     }
 
     public function getFormatter()
@@ -180,34 +209,4 @@ class Pagination implements IteratorAggregate, Countable
 
         return $this;
     }
-
-    public function render()
-    {
-        return $this->getFormatter()->render($this);
-    }
-
-    protected function createPage($number)
-    {
-        return new Page($number, $number === $this->currentPage, $this->baseUrl);
-    }
-
-    protected function getStartPage()
-    {
-        return max($this->currentPage - $this->neighbours, 1);
-    }
-
-    protected function getEndPage()
-    {
-        return min($this->currentPage + $this->neighbours, $this->getTotalPages());
-    }
-
-    public function __toString()
-    {
-        try {
-            return $this->render();
-        } catch (\Exception $e) {
-            return 'No formatter.';
-        }
-    }
-
 }
