@@ -33,14 +33,12 @@ class PaginationProvider extends ServiceProvider
             $config = $this->defaultConfig;
         }
 
-        $di->add('Laasti\Pagination\Pagination', function ($currentPage, $total, $perPage = null, $baseUrl = null, $neighbours = null) use ($config) {
-            $perPage = $perPage ?: $config['per_page'];
-            $baseUrl = $baseUrl ?: $config['base_url'];
-            $neighbours = $neighbours ?: $config['neighbours'];
-            return new Pagination($currentPage, $total, $perPage, $baseUrl, $neighbours);
-        });
-
-
+        $di->add('Laasti\Pagination\Pagination',
+            function ($currentPage, $total, $perPage = null, $baseUrl = null, $neighbours = null) use ($config) {
+                $perPage = $perPage ?: $config['per_page'];
+                $baseUrl = $baseUrl ?: $config['base_url'];
+                $neighbours = $neighbours ?: $config['neighbours'];
+                return new Pagination($currentPage, $total, $perPage, $baseUrl, $neighbours);
+            });
     }
-
 }

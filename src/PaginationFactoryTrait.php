@@ -7,7 +7,7 @@ trait PaginationFactoryTrait
 
     /**
      * Create a new pagination object
-     * 
+     *
      * @param int $currentPage
      * @param int $total
      * @param int $perPage
@@ -18,14 +18,14 @@ trait PaginationFactoryTrait
     public function createPagination($currentPage, $total, $perPage = null, $baseUrl = null, $neighbours = null)
     {
         if (isset($this->container) && $this->container instanceof \League\Container\ContainerInterface) {
-            return $this->getContainer()->get('Laasti\Pagination\Pagination', [$currentPage, $total, $perPage, $baseUrl, $neighbours]);
+            return $this->getContainer()->get('Laasti\Pagination\Pagination',
+                [$currentPage, $total, $perPage, $baseUrl, $neighbours]);
         }
-        
+
         $perPage = $perPage ?: 10;
         $baseUrl = $baseUrl ?: '';
         $neighbours = $neighbours ?: 3;
 
         return new Pagination($currentPage, $total, $perPage, $baseUrl, $neighbours);
     }
-
 }

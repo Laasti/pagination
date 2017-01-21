@@ -19,7 +19,6 @@ class PageTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($page->isActive() === true);
         $this->assertTrue($page->link() === 'http:/acme.com/pages/2');
         //Test __toString
-        $this->assertTrue($page.'5' === '25');
+        $this->assertTrue($page . '5' === '25');
     }
-
 }

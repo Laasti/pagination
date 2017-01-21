@@ -19,7 +19,7 @@ class PaginationProviderTest extends \PHPUnit_Framework_TestCase
 
         $pagination = $container->get('Laasti\Pagination\Pagination', [1, 90]);
         $this->assertTrue($pagination->getTotalPages() === 9);
-        
+
         $pagination = $container->get('Laasti\Pagination\Pagination', [5, 150, 15, 'http://acme.com/pages/', 1]);
         $this->assertTrue($pagination->getTotalPages() === 10);
         $this->assertTrue(count($pagination) === 3);
@@ -40,7 +40,5 @@ class PaginationProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pagination->getTotalPages() === 10);
         $this->assertTrue(count($pagination) === 3);
         $this->assertTrue($pagination->last()->link() === 'http://acme.com/pages/10');
-
     }
-
 }
